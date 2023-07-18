@@ -1,0 +1,766 @@
+package btl_jv;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author Acer
+ */
+public class QLDoanhNghiep extends javax.swing.JFrame {
+
+    ArrayList<DoanhNghiep> dsDN = new ArrayList<>();
+    String filename = "DoanhNghiep.txt";
+    String filename1 = "DoanhNgiep1.txt";
+    DoanhNghiep dn = new DoanhNghiep();
+    int dong = -1;
+    private DefaultTableModel dtmDN;
+    /**
+     * Creates new form QLDoanhNghiep
+     */
+    public QLDoanhNghiep() {
+        fakedata();
+//        docFile();
+        initComponents();
+        loadTable();
+    }
+    
+    public void ghiFile() {
+        try {
+//            FileOutputStream fs = new FileOutputStream(fName);
+//            ObjectOutputStream os = new ObjectOutputStream(fs);
+//            os.writeObject(dsDN);
+//            fs.close();
+//            os.close();
+
+            FileWriter fw = new FileWriter(filename);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (DoanhNghiep x: dsDN)
+                bw.write(x.toString() + "\n");
+            bw.close();
+            fw.close();
+            JOptionPane.showMessageDialog(QLDoanhNghiep.this, "Ghi file thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(QLDoanhNghiep.this, e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public void docFile() {
+        try {
+//            FileInputStream fi = new FileInputStream(filename);
+//            ObjectInputStream ois=new ObjectInputStream(fi);
+//            dsDN = (ArrayList) ois.readObject();
+//            fi.close();
+//            ois.close();
+            FileReader fr = new FileReader(filename);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            while (true){
+                line = br.readLine();
+                if (line == null) break;
+                String[] txt = line.split(",");
+                dsDN.add(new DoanhNghiep(txt[0], txt[1], txt[2], txt[3], txt[4], txt[5], txt[6]));
+            }
+            JOptionPane.showMessageDialog(QLDoanhNghiep.this, "Đọc file thành công.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(QLDoanhNghiep.this, e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public void fakedata() {
+        dsDN.add(new DoanhNghiep("DN004", "Công ty TNHH Gameloft", "Hà Nội", "Nguyễn Thị Thu Hà", "0123456789", "gameloft@gmail.com", "Không mất phí"));
+        DoanhNghiep dn2 = new DoanhNghiep("DN002", "Công Ty Cổ Phần Ntq Solution ", "Hà Nội", "Phạm Thị Thu Hà", "0985224362", "solution@gmail.com", "Trả lương");
+        dsDN.add(dn2);
+        dsDN.add(new DoanhNghiep("DN003", "Công Ty Cổ Phần Tập Đoàn Ominext", "Bắc Ninh", "Đào Minh Phượng", "01987622543", "ominext@gmail.com", "Mất phí"));
+        dsDN.add(new DoanhNghiep("DN001", "Công ty TNHH Sun* Asterisk Việt Nam", "Hưng Yên", "Phạm Mạnh Tuán", "0556895412", "sunasterisk@gmail.com", "Không mất phí"));
+//        dsDN.add(new DoanhNghiep("DN005", "Công Ty Cổ Phần Công Nghệ Itg", "Hà Nội", "Trần Thùy Dương", "0856475258", "congngheitg@gmail.com", "Mất phí"));
+//        dsDN.add(new DoanhNghiep("DN006", "Công ty TNHH phần mềm FPT", "Hà Nội", "Lê Thị Hồng Liên", "0999999999", "fptsoftware@gmail.com", "Trả lương"));
+//        dsDN.add(new DoanhNghiep("DN007", "Công Ty Cổ Phần Rikkeisoft", "Hà Nam", "Nguyễn Thùy Linh", "0112233445", "rikkeisoft@gmail.com", "Không mất phí"));
+//        dsDN.add(new DoanhNghiep("DN008", "Hệ thống thông tin FPT Fis", "Hà Nội", "Phạm Thị Thùy Linh", "0145684257", "fptfis@gmail.com", "Mất phí"));
+//        dsDN.add(new DoanhNghiep("DN009", "Công Ty Cổ Phần Misa", "Hà Nội", "Nguyễn Trung Triệu", "0956485325", "misa@gmail.com", "Mất phí"));
+//        dsDN.add(new DoanhNghiep("DN010", "Công ty TNHH CMC Global", "Hà Nội", "Phan Thị Hoa", "0999666222", "cmcglobal@gmail.com", "Không mất phí"));
+    }
+    
+    public void loadTable() {
+        doanhNghiepTable.setModel(new TableDN(dsDN));
+    }
+    
+    private void xoaDLBang() {
+        int rowCount = dtmDN.getRowCount();
+        for (int i = rowCount; i > 0; i--) {
+            dtmDN.removeRow(i - 1);
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jMenuItem1 = new javax.swing.JMenuItem();
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
+        buttonGroup4 = new javax.swing.ButtonGroup();
+        buttonGroup5 = new javax.swing.ButtonGroup();
+        buttonGroup6 = new javax.swing.ButtonGroup();
+        jButton2 = new javax.swing.JButton();
+        tieuDeLabel = new javax.swing.JLabel();
+        themMoiButton = new javax.swing.JButton();
+        suaButton = new javax.swing.JButton();
+        xoaButton = new javax.swing.JButton();
+        datLaiButton = new javax.swing.JButton();
+        thoatButton = new javax.swing.JButton();
+        maDNLabel = new javax.swing.JLabel();
+        tenDNLabel = new javax.swing.JLabel();
+        diaChiLabel = new javax.swing.JLabel();
+        nguoiLHLabel = new javax.swing.JLabel();
+        soDTLabel = new javax.swing.JLabel();
+        emailLabel = new javax.swing.JLabel();
+        loaiLabel = new javax.swing.JLabel();
+        loaiComboBox = new javax.swing.JComboBox<>();
+        maDNTextField = new javax.swing.JTextField();
+        tenDNTextField = new javax.swing.JTextField();
+        diaChiTextField = new javax.swing.JTextField();
+        nguoiLHTextField = new javax.swing.JTextField();
+        soDTTextField = new javax.swing.JTextField();
+        emailTextField = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        doanhNghiepTable = new javax.swing.JTable();
+        themDatButton = new javax.swing.JButton();
+        timKiemTextField = new javax.swing.JTextField();
+        timKiemButton = new javax.swing.JButton();
+        matPhiRadioButton = new javax.swing.JRadioButton();
+        khongPhiRadioButton = new javax.swing.JRadioButton();
+        traLuongRadioButton = new javax.swing.JRadioButton();
+        locButton = new javax.swing.JButton();
+        docFileButton = new javax.swing.JButton();
+        luuFileButton = new javax.swing.JButton();
+        hienThiButton = new javax.swing.JButton();
+        sapXepButton = new javax.swing.JButton();
+
+        jMenuItem1.setText("jMenuItem1");
+
+        jButton2.setText("jButton2");
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Quản lý doanh nghiệp");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
+
+        tieuDeLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        tieuDeLabel.setText("THÔNG TIN DOANH NGHIỆP");
+
+        themMoiButton.setText("Thêm mới");
+        themMoiButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                themMoiButtonActionPerformed(evt);
+            }
+        });
+
+        suaButton.setText("Sửa");
+        suaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                suaButtonActionPerformed(evt);
+            }
+        });
+
+        xoaButton.setText("Xóa");
+        xoaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                xoaButtonActionPerformed(evt);
+            }
+        });
+
+        datLaiButton.setText("Đặt lại");
+        datLaiButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datLaiButtonActionPerformed(evt);
+            }
+        });
+
+        thoatButton.setText("Thoát");
+        thoatButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                thoatButtonActionPerformed(evt);
+            }
+        });
+
+        maDNLabel.setText("Mã doanh nghiệp");
+
+        tenDNLabel.setText("Tên doanh nghiệp");
+
+        diaChiLabel.setText("Địa chỉ");
+
+        nguoiLHLabel.setText("Người liên hệ");
+
+        soDTLabel.setText("Số điện thoại");
+
+        emailLabel.setText("Email");
+
+        loaiLabel.setText("Loại");
+
+        loaiComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mất phí", "Không mất phí", "Trả lương" }));
+
+        doanhNghiepTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "STT", "Mã doanh nghiệp", "Tên doanh nghiệp", "Địa chỉ", "Người liên hệ", "Số điện thoại", "Email", "Loại"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        doanhNghiepTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                doanhNghiepTableMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(doanhNghiepTable);
+        if (doanhNghiepTable.getColumnModel().getColumnCount() > 0) {
+            doanhNghiepTable.getColumnModel().getColumn(0).setPreferredWidth(8);
+        }
+
+        themDatButton.setText("Thêm & đặt lại");
+        themDatButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                themDatButtonActionPerformed(evt);
+            }
+        });
+
+        timKiemTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timKiemTextFieldActionPerformed(evt);
+            }
+        });
+
+        timKiemButton.setText("Tìm kiếm");
+        timKiemButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timKiemButtonActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(matPhiRadioButton);
+        matPhiRadioButton.setText("Mất phí");
+
+        buttonGroup1.add(khongPhiRadioButton);
+        khongPhiRadioButton.setText("Không mất phí");
+
+        buttonGroup1.add(traLuongRadioButton);
+        traLuongRadioButton.setText("Trả lương");
+
+        locButton.setText("Lọc");
+        locButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                locButtonActionPerformed(evt);
+            }
+        });
+
+        docFileButton.setText("Đọc file");
+        docFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                docFileButtonActionPerformed(evt);
+            }
+        });
+
+        luuFileButton.setText("Lưu file");
+        luuFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                luuFileButtonActionPerformed(evt);
+            }
+        });
+
+        hienThiButton.setText("Hiển thị lại");
+        hienThiButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hienThiButtonActionPerformed(evt);
+            }
+        });
+
+        sapXepButton.setText("Sắp xếp");
+        sapXepButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sapXepButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tenDNLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(maDNLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(diaChiLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(loaiLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(diaChiTextField)
+                            .addComponent(tenDNTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(maDNTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(loaiComboBox, 0, 180, Short.MAX_VALUE))
+                        .addGap(85, 85, 85)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(nguoiLHLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(soDTLabel)
+                            .addComponent(emailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(emailTextField)
+                            .addComponent(soDTTextField)
+                            .addComponent(nguoiLHTextField)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(hienThiButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(63, 63, 63))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(33, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 724, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(timKiemTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(timKiemButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(matPhiRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(khongPhiRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(traLuongRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(locButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(28, 28, 28)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(suaButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(themDatButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(themMoiButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(xoaButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(datLaiButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(thoatButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(docFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(luuFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(sapXepButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(tieuDeLabel)
+                .addGap(339, 339, 339))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tieuDeLabel)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nguoiLHLabel)
+                            .addComponent(nguoiLHTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(themDatButton))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(soDTLabel)
+                                    .addComponent(soDTTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(emailLabel)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(themMoiButton))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(maDNTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(maDNLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tenDNLabel)
+                            .addComponent(tenDNTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(diaChiLabel)
+                            .addComponent(diaChiTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(loaiLabel)
+                                    .addComponent(loaiComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(hienThiButton)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(timKiemTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(timKiemButton)
+                            .addComponent(locButton)
+                            .addComponent(matPhiRadioButton)
+                            .addComponent(khongPhiRadioButton)
+                            .addComponent(traLuongRadioButton)
+                            .addComponent(xoaButton)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(suaButton)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(datLaiButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(docFileButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(luuFileButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(sapXepButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(thoatButton))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+    public JTextField getMaDNTextField() throws Exception {
+        if (maDNTextField.getText().trim().equals("")) {
+            throw new Exception("Không được để trống mã công ty!");
+        }
+        if (dsDN.contains(new DoanhNghiep(maDNTextField.getText().trim().toUpperCase()))) {
+            throw new Exception("Mã công ty đã tồn tại!");
+        }
+        return maDNTextField;
+    }
+    
+    public JTextField getTenDNTextField() throws Exception {
+        if (tenDNTextField.getText().trim().equals("")) {
+            throw new Exception("Không được để trống tên công ty!");
+        }
+        return tenDNTextField;
+    }
+    
+    public JTextField getSoDTextField() throws Exception {
+        String soDT = soDTTextField.getText().trim();
+        if (soDT.equals("")) {
+            throw new Exception("Không được để trống số điện thoại!");
+        } 
+        boolean hople = true;
+        if (soDT.length() > 11 || !soDT.startsWith("0"))
+            hople = false;
+        else {
+            for (int i = 1; i < soDT.length(); i++) {
+                if (!Character.isDigit(soDT.charAt(i))) {
+                    hople = false;
+                    break;
+                }
+            }
+        }
+        if (!hople) {
+            throw new Exception("Số điện thoại không hợp lệ!");
+        }
+        return soDTTextField;
+    }
+    
+    public JTextField getTimKiemTextField() throws Exception {
+        if (timKiemTextField.getText().trim().equals("")) {
+            throw new Exception("Chưa nhập thông tin tìm kiếm!");
+        }
+        return timKiemTextField;
+    }
+    
+    public void checkDong() throws Exception {
+        if (dong == -1) {
+            throw new Exception("Bạn chưa chọn dòng!");
+        }
+    }
+    
+    private void themMoiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_themMoiButtonActionPerformed
+        // TODO add your handling code here:
+        try {
+            dn = new DoanhNghiep(getMaDNTextField().getText().trim().toUpperCase(), getTenDNTextField().getText().trim(), diaChiTextField.getText().trim(), nguoiLHTextField.getText().trim(), getSoDTextField().getText().trim(), emailTextField.getText().trim(), (String) loaiComboBox.getSelectedItem());
+            dsDN.add(dn);
+            loadTable();
+            JOptionPane.showMessageDialog(QLDoanhNghiep.this, "Thêm doanh nghiệp thành công.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(QLDoanhNghiep.this, e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_themMoiButtonActionPerformed
+
+    private void xoaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xoaButtonActionPerformed
+        // TODO add your handling code here:
+        try {
+            dong = doanhNghiepTable.getSelectedRow(); 
+            checkDong();
+            int chon = JOptionPane.showConfirmDialog(QLDoanhNghiep.this, "Bạn có chắc chắn xóa không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+            if (chon == JOptionPane.YES_OPTION) {
+            dsDN.remove(dong);
+            loadTable();
+            JOptionPane.showMessageDialog(QLDoanhNghiep.this, "Xóa doanh nghiệp thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(QLDoanhNghiep.this, e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        } 
+    }//GEN-LAST:event_xoaButtonActionPerformed
+
+    private void thoatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_thoatButtonActionPerformed
+        // TODO add your handling code here:
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        if (JOptionPane.showConfirmDialog(QLDoanhNghiep.this, "Bạn chắc chắn muốn đóng ?", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
+            new Admin().setVisible(true);
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_thoatButtonActionPerformed
+
+    private void suaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suaButtonActionPerformed
+        // TODO add your handling code here:
+        try {
+            dong = doanhNghiepTable.getSelectedRow();
+            checkDong();
+            DoanhNghiep dnNew = new DoanhNghiep();
+            if (dsDN.get(dong).getMaDN().equalsIgnoreCase(maDNTextField.getText().trim())) {
+                dnNew.setMaDN(maDNTextField.getText().trim().toUpperCase() + "");
+            }
+            else {
+                dnNew.setMaDN(getMaDNTextField().getText().trim().toUpperCase() + "");
+            }
+            dnNew.setTenDN(getTenDNTextField().getText().trim() + "");
+            dnNew.setDiaChi(diaChiTextField.getText().trim() + "");
+            dnNew.setNguoiLH(nguoiLHTextField.getText().trim() + "");
+            dnNew.setSoDT(getSoDTextField().getText().trim() + "");
+            dnNew.setEmail(emailTextField.getText().trim() + "");
+            dnNew.setLoai(loaiComboBox.getSelectedItem() + "");
+            dsDN.set(dong, dnNew);
+            JOptionPane.showMessageDialog(QLDoanhNghiep.this, "Sửa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            loadTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(QLDoanhNghiep.this, e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_suaButtonActionPerformed
+
+    private void doanhNghiepTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_doanhNghiepTableMouseClicked
+        // TODO add your handling code here:
+        dong = doanhNghiepTable.getSelectedRow();
+        if (dong != -1) {
+           dn = dsDN.get(dong);       
+           maDNTextField.setText(dn.getMaDN()+ "");
+           tenDNTextField.setText(dn.getTenDN()+ "");
+           diaChiTextField.setText(dn.getDiaChi()+ "");
+           nguoiLHTextField.setText(dn.getNguoiLH()+ "");
+           soDTTextField.setText(dn.getSoDT()+ "");
+           emailTextField.setText(dn.getEmail()+ "");
+           loaiComboBox.setSelectedItem(dn.getLoai());
+        }
+    }//GEN-LAST:event_doanhNghiepTableMouseClicked
+
+    private void datLaiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datLaiButtonActionPerformed
+        // TODO add your handling code here:
+           maDNTextField.setText("");
+           tenDNTextField.setText("");
+           diaChiTextField.setText("");
+           nguoiLHTextField.setText("");
+           soDTTextField.setText("");
+           emailTextField.setText("");
+           loaiComboBox.setSelectedIndex(0);
+    }//GEN-LAST:event_datLaiButtonActionPerformed
+
+    private void themDatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_themDatButtonActionPerformed
+        // TODO add your handling code here:
+        themMoiButtonActionPerformed(evt);
+        maDNTextField.setText("");
+        tenDNTextField.setText("");
+        diaChiTextField.setText("");
+        nguoiLHTextField.setText("");
+        soDTTextField.setText("");
+        emailTextField.setText("");
+        loaiComboBox.setSelectedItem("");
+    }//GEN-LAST:event_themDatButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        if (JOptionPane.showConfirmDialog(QLDoanhNghiep.this, "Bạn chắc chắn muốn đóng ?", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
+            this.dispose();
+        }
+    }//GEN-LAST:event_formWindowClosing
+
+    private void timKiemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timKiemButtonActionPerformed
+        // TODO add your handling code here:
+        try {
+            ArrayList<DoanhNghiep> dsTim = new ArrayList<>();
+            String text = getTimKiemTextField().getText().trim().toLowerCase();
+            for (DoanhNghiep x : dsDN) {
+                if (x.getTenDN().toLowerCase().contains(text)) {
+                    dsTim.add(x);
+                }
+            }
+            doanhNghiepTable.setModel(new TableDN(dsTim));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(QLDoanhNghiep.this, e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_timKiemButtonActionPerformed
+
+    private void locButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_locButtonActionPerformed
+        // TODO add your handling code here:
+        String loc = "";  
+        ArrayList<DoanhNghiep> dsLoc = new ArrayList<>();
+        try {
+            if (matPhiRadioButton.isSelected()) loc += matPhiRadioButton.getText();
+            if (khongPhiRadioButton.isSelected()) loc += khongPhiRadioButton.getText();
+            if (traLuongRadioButton.isSelected()) loc += traLuongRadioButton.getText();
+            if (loc.equals("")) throw new Exception ("Chưa chọn điều kiện lọc");
+            for (DoanhNghiep x : dsDN) {
+                if (loc.equalsIgnoreCase(x.getLoai())) {
+                    dsLoc.add(x);
+                }
+            }
+            doanhNghiepTable.setModel(new TableDN(dsLoc));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(QLDoanhNghiep.this, e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_locButtonActionPerformed
+
+    private void hienThiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hienThiButtonActionPerformed
+        // TODO add your handling code here:
+        loadTable();
+    }//GEN-LAST:event_hienThiButtonActionPerformed
+
+    private void luuFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuFileButtonActionPerformed
+        // TODO add your handling code here:
+        ghiFile();
+    }//GEN-LAST:event_luuFileButtonActionPerformed
+
+    private void docFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_docFileButtonActionPerformed
+        // TODO add your handling code here:
+        dsDN.clear();
+        docFile();
+        loadTable();
+    }//GEN-LAST:event_docFileButtonActionPerformed
+
+    private void sapXepButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sapXepButtonActionPerformed
+        // TODO add your handling code here:
+        Collections.sort(dsDN);
+        loadTable();
+    }//GEN-LAST:event_sapXepButtonActionPerformed
+
+    private void timKiemTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timKiemTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_timKiemTextFieldActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(QLDoanhNghiep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(QLDoanhNghiep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(QLDoanhNghiep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(QLDoanhNghiep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new QLDoanhNghiep().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
+    private javax.swing.ButtonGroup buttonGroup4;
+    private javax.swing.ButtonGroup buttonGroup5;
+    private javax.swing.ButtonGroup buttonGroup6;
+    private javax.swing.JButton datLaiButton;
+    private javax.swing.JLabel diaChiLabel;
+    private javax.swing.JTextField diaChiTextField;
+    private javax.swing.JTable doanhNghiepTable;
+    private javax.swing.JButton docFileButton;
+    private javax.swing.JLabel emailLabel;
+    private javax.swing.JTextField emailTextField;
+    private javax.swing.JButton hienThiButton;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JRadioButton khongPhiRadioButton;
+    private javax.swing.JComboBox<String> loaiComboBox;
+    private javax.swing.JLabel loaiLabel;
+    private javax.swing.JButton locButton;
+    private javax.swing.JButton luuFileButton;
+    private javax.swing.JLabel maDNLabel;
+    private javax.swing.JTextField maDNTextField;
+    private javax.swing.JRadioButton matPhiRadioButton;
+    private javax.swing.JLabel nguoiLHLabel;
+    private javax.swing.JTextField nguoiLHTextField;
+    private javax.swing.JButton sapXepButton;
+    private javax.swing.JLabel soDTLabel;
+    private javax.swing.JTextField soDTTextField;
+    private javax.swing.JButton suaButton;
+    private javax.swing.JLabel tenDNLabel;
+    private javax.swing.JTextField tenDNTextField;
+    private javax.swing.JButton themDatButton;
+    private javax.swing.JButton themMoiButton;
+    private javax.swing.JButton thoatButton;
+    private javax.swing.JLabel tieuDeLabel;
+    private javax.swing.JButton timKiemButton;
+    private javax.swing.JTextField timKiemTextField;
+    private javax.swing.JRadioButton traLuongRadioButton;
+    private javax.swing.JButton xoaButton;
+    // End of variables declaration//GEN-END:variables
+}
